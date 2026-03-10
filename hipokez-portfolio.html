@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <link rel="icon" type="image/png" href="Hıpokez.png">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hipokez — Yazılımcı & Tasarımcı</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --green-deep:   #1a3325;
+      --green-mid:    #2d5c42;
+      --green-light:  #4a8c65;
+      --green-soft:   #a8d4b8;
+      --green-pale:   #e6f2eb;
+      --white:        #f9fdf9;
+      --off-white:    #eef7f1;
+      --text-dark:    #0f1f17;
+      --text-mid:     #3a5445;
+      --text-muted:   #7aaa8e;
+      --accent:       #3d8c5c;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--white);
+      color: var(--text-dark);
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 1.4rem 5vw;
+      background: rgba(249,253,249,0.88);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid rgba(74,140,101,0.12);
+    }
+    .nav-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.5rem; font-weight: 500;
+      letter-spacing: 0.12em; color: var(--green-deep);
+      text-decoration: none;
+    }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a {
+      font-size: 0.82rem; letter-spacing: 0.08em; font-weight: 400;
+      color: var(--text-mid); text-decoration: none; text-transform: uppercase;
+      transition: color .25s;
+    }
+    .nav-links a:hover { color: var(--green-mid); }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      padding: 0 5vw;
+      gap: 4rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 60% 80% at 70% 50%, var(--green-pale) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero-text { z-index: 1; animation: fadeUp .9s ease both; }
+    .hero-tag {
+      display: inline-block;
+      font-size: 0.75rem; letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--green-light); margin-bottom: 1.4rem;
+      border: 1px solid var(--green-soft); padding: .35rem .9rem;
+      border-radius: 2rem;
+    }
+    .hero-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(3.2rem, 7vw, 6rem);
+      font-weight: 300; line-height: 1.05;
+      color: var(--green-deep); margin-bottom: .6rem;
+      letter-spacing: -0.01em;
+    }
+    .hero-title {
+      font-size: 1rem; color: var(--text-muted); font-weight: 300;
+      letter-spacing: 0.1em; margin-bottom: 1.8rem;
+    }
+    .hero-desc {
+      font-size: 0.97rem; line-height: 1.75; color: var(--text-mid);
+      max-width: 480px; margin-bottom: 2.4rem;
+    }
+    .hero-cta {
+      display: inline-flex; align-items: center; gap: .6rem;
+      background: var(--green-deep); color: var(--white);
+      padding: .85rem 2rem; border-radius: 3rem;
+      text-decoration: none; font-size: 0.85rem; letter-spacing: 0.06em;
+      transition: background .25s, transform .2s;
+    }
+    .hero-cta:hover { background: var(--green-mid); transform: translateY(-2px); }
+
+    /* Photo */
+    .hero-visual {
+      z-index: 1; display: flex; justify-content: center; align-items: center;
+      animation: fadeUp .9s .2s ease both;
+    }
+    .photo-frame {
+      position: relative; width: clamp(240px, 32vw, 420px); aspect-ratio: 3/4;
+    }
+    .photo-frame::before {
+      content: '';
+      position: absolute; top: 18px; left: 18px;
+      width: 100%; height: 100%;
+      border: 2px solid var(--green-soft); border-radius: 4px;
+      z-index: 0;
+    }
+    .photo-frame img {
+      position: relative; z-index: 1;
+      width: 100%; height: 100%; object-fit: cover;
+      border-radius: 4px;
+      filter: grayscale(15%) contrast(1.05);
+    }
+    .photo-badge {
+      position: absolute; bottom: -18px; right: -18px; z-index: 2;
+      background: var(--green-deep); color: var(--white);
+      padding: .7rem 1.1rem; border-radius: .5rem;
+      font-size: .78rem; letter-spacing: .06em; line-height: 1.4;
+    }
+
+    /* ── SECTIONS ── */
+    section { padding: 7rem 5vw; }
+    section:nth-child(even) { background: var(--off-white); }
+
+    .section-label {
+      font-size: .72rem; letter-spacing: .2em; text-transform: uppercase;
+      color: var(--green-light); margin-bottom: .6rem;
+    }
+    .section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2rem, 4vw, 3rem); font-weight: 400;
+      color: var(--green-deep); margin-bottom: 3rem; line-height: 1.15;
+    }
+
+    /* ── SKILLS ── */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.5rem;
+    }
+    .skill-card {
+      background: var(--white);
+      border: 1px solid rgba(74,140,101,0.14);
+      border-radius: .75rem; padding: 2rem;
+      transition: transform .25s, box-shadow .25s;
+    }
+    .skill-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(29,83,55,0.1); }
+    .skill-icon {
+      width: 42px; height: 42px;
+      background: var(--green-pale);
+      border-radius: .5rem;
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 1.1rem; font-size: 1.2rem;
+    }
+    .skill-card h3 {
+      font-size: .88rem; font-weight: 500; color: var(--green-deep);
+      margin-bottom: .8rem; letter-spacing: .04em;
+    }
+    .skill-card p { font-size: .84rem; color: var(--text-mid); line-height: 1.65; }
+    .skill-tags { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: 1rem; }
+    .skill-tag {
+      font-size: .72rem; padding: .28rem .7rem;
+      background: var(--green-pale); color: var(--green-mid);
+      border-radius: 2rem; letter-spacing: .04em;
+    }
+
+    /* ── PROJECTS ── */
+    .projects-list { display: flex; flex-direction: column; gap: 2rem; }
+    .project-card {
+      display: grid; grid-template-columns: auto 1fr;
+      gap: 2rem; align-items: start;
+      background: var(--white);
+      border: 1px solid rgba(74,140,101,0.13);
+      border-radius: .75rem; padding: 2.2rem;
+      transition: transform .25s, box-shadow .25s;
+    }
+    .project-card:hover { transform: translateX(4px); box-shadow: 0 8px 28px rgba(29,83,55,0.09); }
+    .project-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.8rem; font-weight: 300;
+      color: var(--green-soft); line-height: 1; min-width: 3rem;
+    }
+    .project-body h3 {
+      font-size: 1.05rem; font-weight: 500; color: var(--green-deep);
+      margin-bottom: .4rem;
+    }
+    .project-body .project-subtitle {
+      font-size: .78rem; letter-spacing: .1em; text-transform: uppercase;
+      color: var(--green-light); margin-bottom: .8rem;
+    }
+    .project-body p { font-size: .88rem; color: var(--text-mid); line-height: 1.7; }
+    .project-tech { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: 1rem; }
+    .tech-pill {
+      font-size: .72rem; padding: .28rem .75rem;
+      border: 1px solid var(--green-soft); color: var(--green-mid);
+      border-radius: 2rem;
+    }
+
+    /* ── ABOUT ── */
+    .about-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center;
+    }
+    .about-text p {
+      font-size: .95rem; color: var(--text-mid); line-height: 1.85;
+      margin-bottom: 1.2rem;
+    }
+    .about-stats {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;
+    }
+    .stat-box {
+      background: var(--white);
+      border: 1px solid rgba(74,140,101,0.15);
+      border-radius: .65rem; padding: 1.6rem;
+      text-align: center;
+    }
+    .stat-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.4rem; font-weight: 400; color: var(--green-deep);
+    }
+    .stat-label {
+      font-size: .76rem; letter-spacing: .08em; text-transform: uppercase;
+      color: var(--text-muted); margin-top: .3rem;
+    }
+
+    /* ── INTERESTS ── */
+    .interests-row {
+      display: flex; flex-wrap: wrap; gap: 1rem;
+    }
+    .interest-pill {
+      display: flex; align-items: center; gap: .5rem;
+      background: var(--white); border: 1px solid rgba(74,140,101,0.18);
+      border-radius: 3rem; padding: .75rem 1.4rem;
+      font-size: .88rem; color: var(--text-mid);
+      transition: background .2s, color .2s;
+    }
+    .interest-pill:hover { background: var(--green-pale); color: var(--green-deep); }
+    .interest-pill span { font-size: 1.1rem; }
+
+    /* ── CONTACT ── */
+    .contact-inner {
+      max-width: 600px; margin: 0 auto; text-align: center;
+    }
+    .contact-inner .section-label,
+    .contact-inner .section-title { text-align: center; }
+    .contact-inner p { font-size: .97rem; color: var(--text-mid); margin-bottom: 2.5rem; line-height: 1.75; }
+    .contact-cards {
+      display: flex; flex-wrap: wrap; justify-content: center; gap: 1rem;
+    }
+    .contact-card {
+      display: flex; align-items: center; gap: .7rem;
+      background: var(--off-white);
+      border: 1px solid rgba(74,140,101,0.18);
+      border-radius: .6rem; padding: .9rem 1.4rem;
+      font-size: .88rem; color: var(--text-mid); text-decoration: none;
+      transition: background .2s, transform .2s;
+    }
+    .contact-card:hover { background: var(--green-pale); transform: translateY(-2px); }
+    .contact-card .icon { font-size: 1.2rem; }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--green-deep); color: var(--green-soft);
+      text-align: center; padding: 2.5rem 5vw;
+      font-size: .8rem; letter-spacing: .06em;
+    }
+    footer strong { color: var(--white); }
+
+    /* ── DIVIDER LINE ── */
+    .line-divider {
+      width: 48px; height: 2px;
+      background: var(--green-light); margin-bottom: 2rem;
+    }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(28px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .reveal { opacity: 0; transform: translateY(22px); transition: opacity .7s ease, transform .7s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      .hero { grid-template-columns: 1fr; text-align: center; padding-top: 7rem; }
+      .hero-visual { order: -1; }
+      .hero-desc { margin: 0 auto 2rem; }
+      .about-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+      .project-card { grid-template-columns: 1fr; }
+      .nav-links { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#">Hipokez</a>
+  <ul class="nav-links">
+    <li><a href="#yetenekler">Yetenekler</a></li>
+    <li><a href="#projeler">Projeler</a></li>
+    <li><a href="#hakkimda">Hakkımda</a></li>
+    <li><a href="#iletisim">İletişim</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="hero">
+  <div class="hero-text">
+    <span class="hero-tag">Yazılımcı & Tasarımcı</span>
+    <h1 class="hero-name">Hipokez</h1>
+    <p class="hero-title">Front-End Developer · UI Designer · Bot Developer</p>
+    <p class="hero-desc">
+      Modern web teknolojileri ve minimalist tasarım disiplinlerini birleştiren,
+      kullanıcı odaklı projeler geliştiren genç bir yazılımcıyım.
+    </p>
+    <a href="#iletisim" class="hero-cta">
+      İletişime Geç
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M7 2l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </a>
+  </div>
+
+  <div class="hero-visual">
+    <div class="photo-frame">
+      <!-- Atatürk fotoğrafı Wikipedia'dan -->
+      <img
+        src="Mustafa_Kemal_Atatürk_.jpg"
+        alt="Mustafa Kemal Atatürk"
+      />
+      <div class="photo-badge">
+        Mustafa Kemal<br/>Atatürk
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- YETENEKLER -->
+<section id="yetenekler">
+  <div class="reveal">
+    <p class="section-label">Ne Yapıyorum</p>
+    <h2 class="section-title">Teknik Yetenekler</h2>
+    <div class="line-divider"></div>
+  </div>
+  <div class="skills-grid">
+    <div class="skill-card reveal">
+      <div class="skill-icon">🌐</div>
+      <h3>Web Geliştirme (Front-End)</h3>
+      <p>CSS Flexbox ve Grid ile karmaşık arayüz yönetimi. PC, Tablet, Mobil ve TV ekranları için %100 responsive kodlama.</p>
+      <div class="skill-tags">
+        <span class="skill-tag">HTML5</span>
+        <span class="skill-tag">CSS3</span>
+        <span class="skill-tag">JavaScript</span>
+        <span class="skill-tag">Responsive</span>
+      </div>
+    </div>
+    <div class="skill-card reveal">
+      <div class="skill-icon">🤖</div>
+      <h3>Bot Geliştirme</h3>
+      <p>Discord API kullanarak sunucu yönetimi, moderasyon ve kullanıcı desteği odaklı bot geliştirme.</p>
+      <div class="skill-tags">
+        <span class="skill-tag">Discord API</span>
+        <span class="skill-tag">JavaScript</span>
+        <span class="skill-tag">Otomasyon</span>
+      </div>
+    </div>
+    <div class="skill-card reveal">
+      <div class="skill-icon">🎨</div>
+      <h3>UI/UX Tasarım</h3>
+      <p>Minimalist estetik, renk teorisi ve kullanıcı yolculuğunu kolaylaştıran sade navigasyon tasarımı.</p>
+      <div class="skill-tags">
+        <span class="skill-tag">Minimalizm</span>
+        <span class="skill-tag">Renk Teorisi</span>
+        <span class="skill-tag">UI/UX</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJELER -->
+<section id="projeler">
+  <div class="reveal">
+    <p class="section-label">Çalışmalarım</p>
+    <h2 class="section-title">Öne Çıkan Projeler</h2>
+    <div class="line-divider"></div>
+  </div>
+  <div class="projects-list">
+
+    <div class="project-card reveal">
+      <div class="project-num">01</div>
+      <div class="project-body">
+        <p class="project-subtitle">Kurumsal Web Sitesi</p>
+        <h3>Yiğit Transfer</h3>
+        <p>Bir taksi şirketi için geliştirilmiş, yüksek dönüşüm odaklı ve profesyonel landing page. Sadeleştirilmiş kullanıcı arayüzü, mobil öncelikli tasarım ve kurumsal renk paleti uygulaması.</p>
+        <div class="project-tech">
+          <span class="tech-pill">HTML5</span>
+          <span class="tech-pill">CSS3</span>
+          <span class="tech-pill">Responsive Design</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="project-card reveal">
+      <div class="project-num">02</div>
+      <div class="project-body">
+        <p class="project-subtitle">Web Uygulaması</p>
+        <h3>Sakinlik | Saf Meditasyon</h3>
+        <p>Kullanıcıların zihinsel rahatlamasına odaklanan interaktif bir meditasyon platformu. Nefes egzersizi animasyonları, deniz dalgası ve rüzgar gibi ortam seslerinin entegrasyonu, huzur veren minimalist arayüz.</p>
+        <div class="project-tech">
+          <span class="tech-pill">JavaScript</span>
+          <span class="tech-pill">Audio API</span>
+          <span class="tech-pill">CSS Animations</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="project-card reveal">
+      <div class="project-num">03</div>
+      <div class="project-body">
+        <p class="project-subtitle">Discord Botu</p>
+        <h3>YVBT – Sunucu Asistanı</h3>
+        <p>Topluluk yönetimi ve sunucu içi yardım süreçlerini otomatize eden özel bir bot. Komut tabanlı yardım sistemleri ve sunucu düzenleme araçları.</p>
+        <div class="project-tech">
+          <span class="tech-pill">Discord API</span>
+          <span class="tech-pill">JavaScript</span>
+          <span class="tech-pill">Bot Development</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- HAKKIMDA -->
+<section id="hakkimda">
+  <div class="about-grid">
+    <div class="about-text reveal">
+      <p class="section-label">Hakkımda</p>
+      <h2 class="section-title">Kim Olduğum</h2>
+      <div class="line-divider"></div>
+      <p>
+        Modern web teknolojileri ve minimalist tasarım disiplinlerini birleştiren,
+        kullanıcı odaklı projeler geliştiren genç bir yazılımcıyım.
+      </p>
+      <p>
+        Tasarımlarımda sadeliği ve işlevselliği ön planda tutuyorum.
+        Karmaşıklıktan uzak, estetik dengesi yüksek arayüzler tasarlamak
+        temel önceliğimdir.
+      </p>
+      <p>
+        Hedefim; gelecekte global ölçekte tasarım standartları belirleyen
+        bir Full-Stack Developer olmak ve minimalist tasarımın gücünü
+        dijital dünyada yaygınlaştırmak.
+      </p>
+    </div>
+    <div class="about-stats reveal">
+      <div class="stat-box">
+        <div class="stat-num">3</div>
+        <div class="stat-label">Tamamlanan Proje</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-num">16</div>
+        <div class="stat-label">Yaş</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-num">3+</div>
+        <div class="stat-label">Teknoloji Alanı</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-num">∞</div>
+        <div class="stat-label">Öğrenme Azmi</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- İLGİ ALANLARI -->
+<section>
+  <div class="reveal">
+    <p class="section-label">Boş Zamanlar</p>
+    <h2 class="section-title">İlgi Alanlarım</h2>
+    <div class="line-divider"></div>
+  </div>
+  <div class="interests-row reveal">
+    <div class="interest-pill"><span>🏛️</span> Minimalist Mimari</div>
+    <div class="interest-pill"><span>📐</span> Tasarım Dergileri</div>
+    <div class="interest-pill"><span>🎵</span> Ses Mühendisliği</div>
+    <div class="interest-pill"><span>🌊</span> Doğa Sesleri & Ambiyans</div>
+    <div class="interest-pill"><span>💬</span> Topluluk Yönetimi</div>
+    <div class="interest-pill"><span>📱</span> Dijital İletişim</div>
+  </div>
+</section>
+
+<!-- İLETİŞİM -->
+<section id="iletisim">
+  <div class="contact-inner">
+    <p class="section-label reveal">Konuşalım</p>
+    <h2 class="section-title reveal">İletişime Geç</h2>
+    <div class="line-divider" style="margin: 0 auto 2rem;"></div>
+    <p class="reveal">
+      Bir proje için iş birliği yapmak ya da sadece merhaba demek istersen
+      bana ulaşabilirsin.
+    </p>
+    <div class="contact-cards reveal">
+      <div class="contact-card">
+        <span class="icon">💬</span>
+        Discord: yigityavuz092
+      </div>
+      <div class="contact-card">
+        <span class="icon">📍</span>
+        Muğla, Türkiye
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>© 2025 <strong>Hipokez</strong> — Yazılımcı & Tasarımcı · Muğla, Türkiye</p>
+</footer>
+
+<script>
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('visible'), i * 80);
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12 });
+  reveals.forEach(r => observer.observe(r));
+</script>
+</body>
+</html>
